@@ -92,6 +92,28 @@ Data2d<float> convert_to_float(const Data2d<std::string>& data, float invalid_en
     return float_data;
 }
 
+/**
+ * @brief Slices a 2d data structure
+ * 
+ * @tparam T 
+ * @param data original data
+ * @param cols 
+ * @param rows 
+ * @return Data2d<T> sliced data 
+ */
+template <typename T>
+Data2d<T> slice(const Data2d<T>& data, const std::vector<size_t> cols, const std::vector<size_t> rows){
+    Data2d<T> sliced_data;
+    sliced_data.m_columns = cols.size();
+    sliced_data.m_rows = rows.size();
+    sliced_data.m_data.resize(sliced_data.m_columns * sliced_data.m_rows);
+    for (size_t i = 0; i < sliced_data.m_rows; i++){
+        for (size_t j = 0; j < sliced_data.m_columns; j++){
+            sliced_data.m_data[i * sliced_data.m_columns + j] = data.m_data[rows[i] * data.m_columns + cols[j]];
+        }
+    }
+    return sliced_data;
+}
 
 int main(int argc, char** argv){
     using std::cout;
@@ -121,13 +143,19 @@ int main(int argc, char** argv){
     cout << "Looking for dataset at: " << dataset_path << endl;
     Data2d<string> str_data = read_csv(dataset_path, ',');
     Data2d<float> flt_data = convert_to_float(str_data, -9999.0f);
-
-
+    
     cout << "Number of features: " << str_data.m_columns << endl;
 
     auto[train_indices, test_indices] = train_and_test_indices(flt_data.m_rows, 0.7f, 6667u);
     cout << "num_train: " << train_indices.size() << endl;
     cout << "num_test: " << test_indices.size() << endl;
+
+    auto train_data = slice(flt_data, {1, 2, 3, 4, 5, 6, 7, 8, 9}, train_indices);
+    auto train_labels = slice(flt_data, {10}, train_indices);
+    auto test_data = slice(flt_data, {1, 2, 3, 4, 5, 6, 7, 8, 9}, test_indices);
+    auto test_labels = slice(flt_data, {10}, test_indices);
+
+    
 
     return 0;
 }
