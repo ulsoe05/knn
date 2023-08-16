@@ -6,15 +6,7 @@
 #include <filesystem>
 #include <fstream>
 #include <numeric>
-
-template <typename T>
-struct Data2d{
-    std::vector<T> m_data; // Ordering: column-major
-    size_t m_columns;
-    size_t m_rows;
-    operator bool() const { return m_data.size() > 0; }
-};
-
+#include "data2d.h"
 
 
 std::pair<std::vector<size_t>, std::vector<size_t>> train_and_test_indices(uint32_t num_samples, float train_ratio, uint32_t seed){
@@ -26,7 +18,6 @@ std::pair<std::vector<size_t>, std::vector<size_t>> train_and_test_indices(uint3
     indices.resize(num_train);
     return std::make_pair(indices, test_indices);
 }
-
 
 /**
  * @brief Reads a csv file and returns a vector of vectors of strings
@@ -120,9 +111,6 @@ int main(int argc, char** argv){
     using std::endl;
     using std::string;
 
-    cout << "Hello, world!" << endl;
-
-
     const std::vector<string> dataset_features = {"id", 
         "Clump Thickness", 
         "Uniformity of Cell Size", 
@@ -135,8 +123,6 @@ int main(int argc, char** argv){
         "Mitoses", 
         "Class" };
 
-    //std::filesystem::path dataset_path = "breast_cancer_wisconsin_original";
-    //dataset_path /= "breast-cancer-wisconsin.data";
     std::filesystem::path dataset_path(__FILE__);
     dataset_path = dataset_path.parent_path();
     dataset_path /= "breastcancer.data";
@@ -154,8 +140,6 @@ int main(int argc, char** argv){
     auto train_labels = slice(flt_data, {10}, train_indices);
     auto test_data = slice(flt_data, {1, 2, 3, 4, 5, 6, 7, 8, 9}, test_indices);
     auto test_labels = slice(flt_data, {10}, test_indices);
-
-    
 
     return 0;
 }

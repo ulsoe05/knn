@@ -19,7 +19,7 @@ float wang_hash_float(uint32_t seed){
 
 
 // https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
-// This one shoudl be faster and better in every way
+// This one should be faster and better in every way
 uint32_t pcg_hash(uint32_t input){
     input = input * 747796405u + 2891336453u;
     uint32_t word = ((input >> ((input >> 28u) + 4u)) ^ input) * 277803737u;

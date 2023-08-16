@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-
+#include "data2d.h"
 
 class KnnClassifier{
 public:
