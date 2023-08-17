@@ -141,5 +141,23 @@ int main(int argc, char** argv){
     auto test_data = slice(flt_data, {1, 2, 3, 4, 5, 6, 7, 8, 9}, test_indices);
     auto test_labels = slice(flt_data, {10}, test_indices);
 
+    // Printing shapes
+    cout << "train_data: " << train_data.m_rows << " x " << train_data.m_columns << endl;
+    cout << "test_data: " << test_data.m_rows << " x " << test_data.m_columns << endl;
+    cout << "train_labels: " << train_labels.m_rows << " x " << train_labels.m_columns << endl;
+    Data2d<float> predictions = knn_naive(train_data, train_labels, test_data, 11);
+    
+    // Print predictions and labels
+    size_t correct_predictions = 0;
+    
+    for (size_t i = 0; i < predictions.m_rows; i++){
+        cout << "Prediction: " << predictions.m_data[i] << " | Label: " << test_labels.m_data[i] << endl;
+        if (predictions.m_data[i] == test_labels.m_data[i]){
+            correct_predictions++;
+        }
+    }
+    cout << "Accuracy: " << (float)correct_predictions / (float)predictions.m_rows << endl;
+
+
     return 0;
 }
